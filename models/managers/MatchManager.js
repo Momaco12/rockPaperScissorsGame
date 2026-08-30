@@ -29,15 +29,14 @@ const MatchManager = () => {
     }
 
     function updateScore(matchVo, scoreVo){
-        if (matchVo.status == "draw"){
-            return new ScoreVo(scoreVo.computerScore,scoreVo.playerScore)
-        }
-        else if (matchVo.status == "loses"){
-            return new ScoreVo(scoreVo.computerScore+1,scoreVo.playerScore)
-        }
-        else if (matchVo.status == "wins"){
-            return new ScoreVo(scoreVo.computerScore,scoreVo.playerScore+1)
-        }
+        let playerScore = scoreVo.playerScore
+        let computerScore = scoreVo.computerScore
+
+        if (matchVo.status === "wins") playerScore++
+        if (matchVo.status === "loses") computerScore++
+
+        return new ScoreVo(computerScore, playerScore)
+
 
     }
 

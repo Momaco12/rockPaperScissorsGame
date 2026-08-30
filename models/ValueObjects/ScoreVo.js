@@ -1,7 +1,7 @@
 class ScoreVo{
-    constructor(computerScore,playeScore){
+    constructor(computerScore,playerScore){
         this.computerScore = computerScore
-        this.playeScore = playeScore
+        this.playerScore = playerScore
     }
 }
 

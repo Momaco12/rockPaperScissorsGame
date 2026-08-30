@@ -1,6 +1,7 @@
 const matchManager = require('../../../models/managers/MatchManager');
 const PlayerChoiceVo = require('../../../models/ValueObjects/PlayerChoiceVo')
-const MatchVo = require('../../../models/ValueObjects/MatchVo')
+const MatchVo = require('../../../models/ValueObjects/MatchVo');
+const ScoreVo = require('../../../models/ValueObjects/ScoreVo');
 
 describe('MatchManager', () => {
     test('the game is a draw with rock', () => {
@@ -119,5 +120,47 @@ describe('MatchManager', () => {
         //THEN
         expect(result).toBeInstanceOf(MatchVo)
         expect(result.status).toBe("loses")
+    });
+    test('updatescore handles draw outcome correctly', () => {
+        //GIVEN
+        const scoreVo = new ScoreVo(0,0)
+        const matchVo = new MatchVo("humanPlayer","draw")
+        const manager = matchManager();
+
+        //WHEN
+        const result = manager.updateScore(matchVo, scoreVo)
+        console.log(result)
+        //THEN
+        expect(result).toBeInstanceOf(ScoreVo)
+        expect(result.playerScore).toBe(scoreVo.playerScore)
+        expect(result.computerScore).toBe(scoreVo.computerScore)
+    });
+    test('updatescore handles player wins outcome correctly', () => {
+        //GIVEN
+        const scoreVo = new ScoreVo(0,0)
+        const matchVo = new MatchVo("humanPlayer","wins")
+        const manager = matchManager();
+
+        //WHEN
+        const result = manager.updateScore(matchVo, scoreVo)
+        console.log(result)
+        //THEN
+        expect(result).toBeInstanceOf(ScoreVo)
+        expect(result.playerScore).toBe(scoreVo.playerScore+1)
+        expect(result.computerScore).toBe(scoreVo.computerScore)
+    });
+    test('updatescore handles player loses outcome correctly', () => {
+        //GIVEN
+        const scoreVo = new ScoreVo(0,0)
+        const matchVo = new MatchVo("humanPlayer","loses")
+        const manager = matchManager();
+
+        //WHEN
+        const result = manager.updateScore(matchVo, scoreVo)
+        console.log(result)
+        //THEN
+        expect(result).toBeInstanceOf(ScoreVo)
+        expect(result.playerScore).toBe(scoreVo.playerScore)
+        expect(result.computerScore).toBe(scoreVo.computerScore+1)
     });
 });
